@@ -1,9 +1,8 @@
 using _Scripts.Managers;
 using _Scripts.Managers.Systems;
 using UnityEngine;
-using UnityEngine.Pool;
 
-namespace _Scripts.Circle
+namespace _Scripts.Controllers.Circle
 {
     public class Circle : MonoBehaviour
     {
@@ -46,7 +45,19 @@ namespace _Scripts.Circle
                 _transform.position = inWorldStartingPosition;
             }
 
-            _spriteRenderer.color = Random.ColorHSV(0f, 1f, 1f, 1f, 0.2f, 1f);
+            SetColor();
+        }
+
+        private void SetColor()
+        {
+            _spriteRenderer.color = _scale switch
+            {
+                < 1.5f => TextureManager.Instance.GetTextures()[0].GetPixel(0, 0),
+                >= 1.5f and < 3f => TextureManager.Instance.GetTextures()[1].GetPixel(0, 0),
+                >= 3f and < 4f => TextureManager.Instance.GetTextures()[2].GetPixel(0, 0),
+                >= 4f and <= 5f => TextureManager.Instance.GetTextures()[3].GetPixel(0, 0),
+                _ => _spriteRenderer.color
+            };
         }
         
         private void Update()
